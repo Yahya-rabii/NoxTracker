@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "257525076276",
+    "project_id": "noxtracker",
+    "storage_bucket": "noxtracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257525076276:android:e02fa6ff3371e9d4f25561",
+        "android_client_info": {
+          "package_name": "com.example.nox_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "257525076276-fi6c2lgnfabqh6ohfub0dkics2ln1s8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDen7UYs96LYnTne6ZRFyd8887rHXxlifo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "257525076276-fi6c2lgnfabqh6ohfub0dkics2ln1s8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
