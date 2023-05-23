@@ -30,14 +30,18 @@ To run this project locally, follow these steps:
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
-   Navigate to the project directory:
+   git clone https://github.com/Yahya-rabii/NoxTracker.git
+2. Navigate to the project directory:
+      ```bash 
       cd your-repository
-   Replace YOUR_API_KEY in lib/main.dart with your Google Maps API key:
+3. Replace YOUR_API_KEY in lib/main.dart with your Google Maps API key:
+      ```bash 
       static const String MAPS_API_KEY = 'YOUR_API_KEY';
-   Install the required dependencies:
+4. Install the required dependencies:
+      ```bash 
       flutter pub get
-   Run the app:
+5. Run the app:
+      ```bash 
       flutter run
 ### Configuration
     You can customize various aspects of the app by modifying the following parameters in lib/main.dart:
