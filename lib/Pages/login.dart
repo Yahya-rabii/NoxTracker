@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nox_tracker/Pages/home.dart';
 import 'package:nox_tracker/Pages/register.dart';
-import 'package:nox_tracker/auth_page.dart';
+import 'package:nox_tracker/Components/auth_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -74,15 +74,17 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: Padding(
+      body: Container(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
+            TextFormField(
               controller: _emailController,
               decoration: InputDecoration(
                 labelText: 'Email',
+                border: OutlineInputBorder(),
               ),
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
@@ -91,10 +93,11 @@ class _LoginPageState extends State<LoginPage> {
               },
             ),
             SizedBox(height: 16.0),
-            TextField(
+            TextFormField(
               controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
+                border: OutlineInputBorder(),
               ),
               focusNode: _passwordFocusNode,
               obscureText: true,
@@ -104,6 +107,9 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _signInWithEmailAndPassword,
               child: Text('Sign In'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+              ),
             ),
             SizedBox(height: 16.0),
             TextButton(
