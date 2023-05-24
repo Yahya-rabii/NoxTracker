@@ -242,14 +242,27 @@ class _HomePageState extends State<HomePage> {
       );
 
       final database = FirebaseDatabase.instance;
-      final ref = database.reference().child('user_coordinates');
-      ref.push().set({
+      final ref = database
+          .reference()
+          .child('user_coordinates')
+          .child(getUserEmail()) // Use the user's email as the parent node
+          .child('coordinates');
+
+      ref.set({
         'latitude': position.latitude,
         'longitude': position.longitude,
       });
     } catch (e) {
       print('Error saving coordinates: $e');
     }
+  }
+
+  String getUserEmail() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      String email = FirebaseAuth.instance.currentUser!.email!;
+      return email.split("@")[0]; // Get characters until the "@" symbol
+    }
+    return "";
   }
 
   void startLiveTracking() {
