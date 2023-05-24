@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:nox_tracker/Pages/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(31.7917, 7.0926),
-    zoom: 11.0,
+    zoom: 2.0,
   );
 
   bool _locationPermissionGranted = false;
@@ -26,13 +27,13 @@ class _HomePageState extends State<HomePage> {
   String _errorMessage = '';
 
   Set<Marker> _markers = {};
-  List<LatLng> _polylineCoordinates = [];
-  PolylinePoints _polylinePoints = PolylinePoints();
+  final List<LatLng> _polylineCoordinates = [];
+  final PolylinePoints _polylinePoints = PolylinePoints();
   LatLng? _destination;
 
   TravelMode _selectedTravelMode = TravelMode
       .driving; // Set the initial selected travel mode
-  List<TravelMode> _travelModes = [
+  final List<TravelMode> _travelModes = [
     TravelMode.driving,
     TravelMode.walking,
     TravelMode.bicycling,
@@ -49,9 +50,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void requestLocationPermission() async {
-    setState(() {
-      _isLoading = true;
-    });
+
 
     final permissionStatus = await Geolocator.checkPermission();
 
@@ -76,9 +75,6 @@ class _HomePageState extends State<HomePage> {
       getCurrentLocation();
     }
 
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void getCurrentLocation() async {
@@ -281,9 +277,12 @@ class _HomePageState extends State<HomePage> {
 
 
   // Sign out method
-  void signOut() {
+  void signOut(BuildContext context) async {
     if (FirebaseAuth.instance.currentUser != null) {
-      FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
+    //Navigate back to the login page
+    Navigator.pushAndRemoveUntil(
+        context, MaterialPageRoute(builder: (context) => LoginPage()), (Route<dynamic> route) => false);
     }
   }
 
@@ -308,7 +307,7 @@ class _HomePageState extends State<HomePage> {
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
-              onPressed: signOut,
+              onPressed: () => signOut(context),
               icon: const Icon(Icons.logout),
             ),
           ],
