@@ -6,6 +6,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:nox_tracker/Pages/login.dart';
+import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -16,6 +19,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
+
+  Timer? _timer;
+  int _counter = 0;
 
   CameraPosition _initialCameraPosition = const CameraPosition(
     target: LatLng(31.7917, 7.0926),
@@ -227,7 +233,35 @@ class _HomePageState extends State<HomePage> {
     return duration;
   }
 
+
+
+  void saveCoordinatesToDatabase() async {
+    try {
+      final position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final database = FirebaseDatabase.instance;
+      final ref = database.reference().child('user_coordinates');
+      ref.push().set({
+        'latitude': position.latitude,
+        'longitude': position.longitude,
+      });
+    } catch (e) {
+      print('Error saving coordinates: $e');
+    }
+  }
+
   void startLiveTracking() {
+
+
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        saveCoordinatesToDatabase();
+
+        //_timer?.cancel();
+
+    });
+
     Geolocator.getPositionStream().listen((position) {
       updateMarkerPosition(LatLng(position.latitude, position.longitude));
       // Calculate distance and duration based on the updated position
@@ -273,6 +307,8 @@ class _HomePageState extends State<HomePage> {
   void stopLiveTracking() {
     // Stop the position stream subscription
     Geolocator.getPositionStream().listen((position) {}).cancel();
+    _timer?.cancel();
+
   }
 
 
@@ -412,6 +448,12 @@ class _HomePageState extends State<HomePage> {
               child: ElevatedButton(
                 onPressed: () => startLiveTracking(),
                 child: const Text('Start Live Tracking'),
+              ),
+            ),Container(
+              padding: const EdgeInsets.symmetric(horizontal: 1),
+              child: ElevatedButton(
+                onPressed: () => stopLiveTracking(),
+                child: const Text('Stop Live Tracking'),
               ),
             ),
             const SizedBox(height: 16),
